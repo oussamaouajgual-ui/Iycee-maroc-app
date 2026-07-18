@@ -1172,8 +1172,7 @@ async function init() {
 }
 
 // ─── Public API Exports ───────────────────────────────────────────────────────
-export { init, toggleTheme, applyTheme, showToast };
-export { showLevels, showBranches, showSubjects, showPdfs };
+export { init, toggleTheme, showToast };
 
 // Initialize automatically
 if (document.readyState === 'loading') {
