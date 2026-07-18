@@ -2,7 +2,7 @@
 <html lang="fr" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <meta name="description" content="Bibliothèque Lycée Maroc — Parcourez les cours et documents PDF par niveau, filière et matière." />
   <meta name="robots" content="noindex" />
 
@@ -17,334 +17,307 @@
   <link rel="stylesheet" href="css/components.css" />
 
   <style>
-    /* ── Dashboard-specific styles ── */
     body {
-      background: var(--bg-base);
-      min-height: 100vh;
+      background-color: var(--bg-base);
+      padding-bottom: var(--bottom-nav-h); /* Avoid bottom navigation overlapping content */
     }
 
-    /* Navbar — solid on dashboard */
-    .navbar {
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-
-    /* Mobile menu */
-    .mobile-menu-btn {
+    /* Tab transitions */
+    .tab-content {
       display: none;
-      width: 44px; height: 44px;
-      border-radius: var(--radius-md);
-      background: var(--bg-elevated);
-      border: 1px solid var(--border);
-      align-items: center;
-      justify-content: center;
-      font-size: 1.25rem;
-      cursor: pointer;
+    }
+    
+    .tab-content.active {
+      display: block;
     }
 
-    @media (max-width: 768px) {
-      .mobile-menu-btn { display: flex; }
-    }
-
-    /* User dropdown */
-    .user-menu {
-      position: relative;
-    }
-
-    .user-dropdown {
-      position: absolute;
-      top: calc(100% + 8px);
-      right: 0;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-xl);
-      padding: var(--space-2);
-      min-width: 200px;
-      z-index: var(--z-dropdown);
-      animation: fadeSlideDown 0.2s ease both;
-    }
-
-    .user-dropdown.hidden { display: none; }
-
-    .user-dropdown-header {
-      padding: var(--space-3) var(--space-4);
-      border-bottom: 1px solid var(--border);
-      margin-bottom: var(--space-2);
-    }
-
-    .user-dropdown-name {
-      font-size: var(--text-sm);
-      font-weight: 700;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .user-dropdown-email {
-      font-size: var(--text-xs);
-      color: var(--text-muted);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .dropdown-item {
+    /* Styling tweaks for native dashboard */
+    .page-title-row {
+      margin-bottom: var(--space-4);
       display: flex;
-      align-items: center;
-      gap: var(--space-3);
-      padding: var(--space-2) var(--space-4);
-      border-radius: var(--radius-md);
-      font-size: var(--text-sm);
-      font-weight: 500;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all var(--transition-fast);
-      width: 100%;
-    }
-
-    .dropdown-item:hover {
-      background: var(--bg-elevated);
-      color: var(--text-primary);
-    }
-
-    .dropdown-item.danger:hover {
-      background: rgba(239,68,68,0.1);
-      color: var(--danger);
-    }
-
-    /* Dashboard main layout */
-    .dashboard-layout {
-      padding-top: var(--navbar-h);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* Sticky header under navbar */
-    .dash-header {
-      position: sticky;
-      top: var(--navbar-h);
-      z-index: var(--z-card);
-      background: var(--bg-surface);
-      border-bottom: 1px solid var(--border);
-      padding: var(--space-5) 0;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-    .dash-header-inner {
-      display: flex;
-      align-items: center;
       justify-content: space-between;
-      gap: var(--space-6);
-      flex-wrap: wrap;
+      align-items: center;
     }
 
-    .dash-title-group {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      flex: 1;
-      min-width: 0;
-    }
-
-    .dash-step-label {
-      font-size: var(--text-xs);
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--primary);
-    }
-
-    .dash-title {
-      font-size: var(--text-2xl);
+    .page-title-row h1 {
+      font-size: var(--text-xl);
       font-weight: 800;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
     }
 
-    .dash-subtitle {
-      font-size: var(--text-sm);
-      color: var(--text-secondary);
-    }
-
-    /* Main content */
-    .dash-main {
-      flex: 1;
-      padding: var(--space-8) 0 var(--space-16);
-    }
-
-    /* Results bar */
-    .results-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: var(--space-4);
-      margin-bottom: var(--space-6);
-    }
-
-    /* Scroll to top button */
-    .scroll-top {
-      position: fixed;
-      bottom: var(--space-8);
-      right: var(--space-8);
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--gradient-primary);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: var(--shadow-lg);
-      z-index: var(--z-card);
-      font-size: 1.25rem;
+    /* Small improvements to iframe fit */
+    .pdf-modal-body iframe {
+      width: 100%;
+      height: 100%;
       border: none;
-      transition: all var(--transition-base);
-      opacity: 0;
-      pointer-events: none;
-      transform: translateY(20px);
-    }
-
-    .scroll-top.visible {
-      opacity: 1;
-      pointer-events: auto;
-      transform: translateY(0);
-    }
-
-    .scroll-top:hover {
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-xl);
-    }
-
-    @media (max-width: 768px) {
-      .dash-header { padding: var(--space-4) 0; }
-      .dash-title  { font-size: var(--text-xl); }
-      .scroll-top  { bottom: var(--space-4); right: var(--space-4); }
+      background-color: #525659;
     }
   </style>
 </head>
-
 <body>
-  <!-- ──────────── NAVBAR ──────────── -->
-  <nav class="navbar" id="navbar" role="navigation" aria-label="Navigation principale">
-    <div class="container">
-      <a href="index.html" class="navbar-logo" aria-label="Retour à l'accueil">
-        <div class="logo-icon" aria-hidden="true">📚</div>
-        <span>BibLycée<span style="color:var(--accent);">Maroc</span></span>
-      </a>
 
-      <nav class="navbar-nav" aria-label="Navigation principale">
-        <a href="index.html" class="nav-link">Accueil</a>
-        <a href="dashboard.html" class="nav-link active">Bibliothèque</a>
-      </nav>
+  <!-- ──────────── TOP APP BAR ──────────── -->
+  <header class="app-bar" role="banner">
+    <div class="app-bar-brand" id="app-bar-brand-link" style="cursor:pointer;">
+      <span>📚</span> BibLycée<span>Maroc</span>
+    </div>
+    <div class="app-bar-actions">
+      <button class="theme-toggle" id="theme-toggle" title="Changer le thème" aria-label="Toggle theme">🌙</button>
 
-      <div class="navbar-actions">
-        <button class="theme-toggle" id="theme-toggle" title="Changer le thème" aria-label="Basculer le thème">🌙</button>
+      <!-- Connection state button -->
+      <button class="btn btn-secondary btn-sm" id="auth-btn" aria-label="Login">
+        🔑 Connexion
+      </button>
 
-        <!-- Auth: Login button -->
-        <button class="btn btn-secondary btn-sm" id="auth-btn" aria-label="Se connecter">
-          🔑 Connexion
-        </button>
+      <!-- Authenticated avatar -->
+      <div class="user-menu hidden" id="user-area">
+        <div class="btn-icon" id="user-avatar" role="button" aria-haspopup="true" aria-expanded="false" aria-label="User profile">
+          <span id="user-initial" style="font-weight:700;font-size:var(--text-sm);">?</span>
+        </div>
+      </div>
+    </div>
+  </header>
 
-        <!-- Auth: User avatar + dropdown -->
-        <div class="user-menu hidden" id="user-area">
-          <div class="user-avatar" id="user-avatar" role="button" tabindex="0" aria-label="Menu utilisateur" aria-haspopup="true" aria-expanded="false">
-            <span id="user-initial">?</span>
+  <!-- ──────────── BREADCRUMB / STEPS (Explore Only) ──────────── -->
+  <div class="container" style="margin-top: var(--space-4); margin-bottom: var(--space-2); display: none;" id="explore-header-meta">
+    <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb"></nav>
+    <div class="steps-indicator" id="steps-container" role="progressbar" aria-label="Steps" style="margin-top: var(--space-3); display:none;"></div>
+  </div>
+
+  <!-- ──────────── MAIN VIEW PORTAL ──────────── -->
+  <main class="container section" style="padding-top: var(--space-2);" id="main-portal">
+
+    <!-- ──────────────── TAB 1: HOME VIEW ──────────────── -->
+    <section id="view-home" class="tab-content page-view active">
+      <!-- Welcome Banner -->
+      <div class="welcome-banner" id="home-welcome">
+        <h2>Bonjour, Élève ! 👋</h2>
+        <p>Apprends quelque chose de nouveau aujourd'hui.</p>
+      </div>
+
+      <!-- Motivation Card -->
+      <div class="motivation-card">
+        <div class="motivation-icon">💡</div>
+        <div class="motivation-text" id="motivation-quote">"La persévérance est la clé de la réussite."</div>
+      </div>
+
+      <!-- Continue Learning / Last Read PDF -->
+      <div id="continue-learning-wrapper" class="hidden">
+        <div class="page-title-row">
+          <h2 style="font-size: var(--text-sm); font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Reprendre la lecture</h2>
+        </div>
+        <div class="continue-card" id="continue-learning-card">
+          <div class="continue-header">
+            <span class="continue-badge">En Cours</span>
+            <div class="continue-title" id="continue-pdf-title">Chargement...</div>
           </div>
-          <div class="user-dropdown hidden" id="user-dropdown" role="menu">
-            <div class="user-dropdown-header">
-              <div class="user-dropdown-name" id="user-name">Utilisateur</div>
-              <div class="user-dropdown-email" id="user-email">email@example.com</div>
-            </div>
-            <button class="dropdown-item danger" id="signout-btn" role="menuitem">
-              🚪 Se déconnecter
-            </button>
+          <div class="continue-meta" id="continue-pdf-meta">Sujet • Filière</div>
+          <div class="progress-track" style="margin-top: 4px;">
+            <div class="progress-bar" id="continue-pdf-progress" style="width: 0%;"></div>
+          </div>
+          <button class="btn btn-primary btn-sm" id="continue-pdf-btn" style="width:fit-content; margin-top:4px;">👁️ Continuer la lecture</button>
+        </div>
+      </div>
+
+      <!-- Quick Access Grid -->
+      <div class="page-title-row">
+        <h2 style="font-size: var(--text-sm); font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Niveaux Scolaires</h2>
+      </div>
+      <div class="quick-grid">
+        <div class="quick-card" onclick="triggerExploreLevel('tronc-commun')">
+          <div class="quick-card-icon">🌱</div>
+          <div class="quick-card-title">Tronc Commun</div>
+        </div>
+        <div class="quick-card" onclick="triggerExploreLevel('1ere-bac')">
+          <div class="quick-card-icon">📘</div>
+          <div class="quick-card-title">1ère Bac</div>
+        </div>
+        <div class="quick-card" onclick="triggerExploreLevel('2eme-bac')">
+          <div class="quick-card-icon">🎓</div>
+          <div class="quick-card-title">2ème Bac</div>
+        </div>
+        <div class="quick-card" id="home-quick-favs">
+          <div class="quick-card-icon" style="background-color: rgba(255,90,95,0.1); color: #FF5A5F;">❤️</div>
+          <div class="quick-card-title">Favoris</div>
+        </div>
+      </div>
+
+      <!-- Popular subjects section -->
+      <div class="page-title-row">
+        <h2 style="font-size: var(--text-sm); font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Sujets Populaires</h2>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--space-3); margin-bottom: var(--space-8);" id="home-popular-subjects">
+        <!-- Will be filled by js -->
+      </div>
+    </section>
+
+    <!-- ──────────────── TAB 2: EXPLORE VIEW ──────────────── -->
+    <section id="view-explore" class="tab-content page-view">
+      <div class="page-title-row">
+        <h1 id="section-title">Parcourir la Bibliothèque</h1>
+      </div>
+      
+      <!-- Subtitle description -->
+      <p id="section-subtitle" style="color:var(--text-secondary);font-size:var(--text-sm);margin-bottom:var(--space-5);">Choisissez votre niveau scolaire.</p>
+
+      <!-- Global search container (only displays inside PDFs page of explore) -->
+      <div class="search-container" id="search-container" style="display: none;">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="search" id="search-input" class="search-input" placeholder="Rechercher dans les documents..." autocomplete="off" />
+          <button class="search-clear" id="search-clear" style="display:none;">✕</button>
+        </div>
+        <div id="results-bar" style="margin-top:var(--space-3); display:none; justify-content:space-between; align-items:center; font-size:var(--text-xs); color:var(--text-secondary);">
+          <span id="results-count">0 documents trouvés</span>
+        </div>
+      </div>
+
+      <!-- Dynamic content space (Levels, Branches, Subjects, or PDFs list) -->
+      <div id="content-area"></div>
+    </section>
+
+    <!-- ──────────────── TAB 3: FAVORITES VIEW ──────────────── -->
+    <section id="view-favorites" class="tab-content page-view">
+      <div class="page-title-row">
+        <h1>Mes Favoris</h1>
+      </div>
+      <p style="color:var(--text-secondary);font-size:var(--text-sm);margin-bottom:var(--space-5);">Retrouvez tous vos cours et exercices sauvegardés ici.</p>
+      
+      <!-- List of favorites -->
+      <div id="favorites-list-area"></div>
+    </section>
+
+    <!-- ──────────────── TAB 4: PROFILE VIEW ──────────────── -->
+    <section id="view-profile" class="tab-content page-view">
+      <div class="page-title-row">
+        <h1>Mon Espace</h1>
+      </div>
+
+      <!-- Profile Header -->
+      <div class="profile-card">
+        <div class="profile-avatar-large" id="profile-avatar-area">
+          <span id="profile-avatar-initial">?</span>
+        </div>
+        <div class="profile-name" id="profile-display-name">Utilisateur Invité</div>
+        <div class="profile-email" id="profile-display-email">Rejoignez-nous pour sauvegarder vos stats</div>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="stat-val" id="stat-read-count">0</div>
+            <div class="stat-lbl">Lus</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-favorites-count">0</div>
+            <div class="stat-lbl">Favoris</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-val" id="stat-progress-streak">0%</div>
+            <div class="stat-lbl">Progression</div>
           </div>
         </div>
-
-        <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Menu mobile">☰</button>
       </div>
+
+      <!-- Settings group: General -->
+      <div class="page-title-row">
+        <h2 style="font-size: var(--text-sm); font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Préférences</h2>
+      </div>
+      <div class="settings-group">
+        <div class="settings-item" id="setting-toggle-dark-row">
+          <div class="settings-item-title">🌓 Mode Sombre</div>
+          <label class="switch">
+            <input type="checkbox" id="setting-dark-mode-switch" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-title">🔔 Notifications</div>
+          <label class="switch">
+            <input type="checkbox" id="setting-notification-switch" />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="settings-item">
+          <div class="settings-item-title">🌐 Langue de l'app</div>
+          <div style="font-size: var(--text-xs); color: var(--text-secondary); font-weight: 600;">Français 🇫🇷</div>
+        </div>
+      </div>
+
+      <!-- Settings group: Account & About -->
+      <div class="page-title-row">
+        <h2 style="font-size: var(--text-sm); font-weight: 700; text-transform: uppercase; color: var(--text-secondary);">Aide & Informations</h2>
+      </div>
+      <div class="settings-group">
+        <div class="settings-item" id="profile-about-btn">
+          <div class="settings-item-title">ℹ️ À propos de l'application</div>
+          <div style="color:var(--text-muted);">›</div>
+        </div>
+        <div class="settings-item" id="profile-terms-btn">
+          <div class="settings-item-title">📄 Conditions & Confidentialité</div>
+          <div style="color:var(--text-muted);">›</div>
+        </div>
+        <div class="settings-item" id="profile-contact-btn">
+          <div class="settings-item-title">✉️ Nous Contacter</div>
+          <div style="color:var(--text-muted);">›</div>
+        </div>
+        <div class="settings-item hidden" id="profile-signout-btn" style="color: var(--danger);">
+          <div class="settings-item-title" style="color: var(--danger);">🚪 Se Déconnecter</div>
+          <div>›</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ──────────── BOTTOM NAVIGATION BAR ──────────── -->
+  <nav class="bottom-nav" role="navigation" aria-label="Bottom Navigation">
+    <div class="bottom-nav-item active" data-tab="home" id="nav-tab-home">
+      <!-- Home SVG icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span>Accueil</span>
+    </div>
+    <div class="bottom-nav-item" data-tab="explore" id="nav-tab-explore">
+      <!-- Compass / Explore SVG icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+      <span>Explorer</span>
+    </div>
+    <div class="bottom-nav-item" data-tab="favorites" id="nav-tab-favorites">
+      <!-- Heart / Saved SVG icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span>Favoris</span>
+    </div>
+    <div class="bottom-nav-item" data-tab="profile" id="nav-tab-profile">
+      <!-- User / Profile SVG icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Mon Espace</span>
     </div>
   </nav>
 
-  <!-- ──────────── DASHBOARD LAYOUT ──────────── -->
-  <div class="dashboard-layout">
-
-    <!-- Sticky header with breadcrumb + search -->
-    <div class="dash-header" role="banner">
-      <div class="container">
-        <!-- Breadcrumb -->
-        <nav class="breadcrumb" id="breadcrumb" aria-label="Fil d'Ariane" style="margin-bottom:var(--space-4);"></nav>
-
-        <div class="dash-header-inner">
-          <!-- Title group -->
-          <div class="dash-title-group">
-            <span class="dash-step-label" id="section-label">📚 Navigation</span>
-            <h1 class="dash-title" id="section-title">Bibliothèque</h1>
-            <p class="dash-subtitle" id="section-subtitle">Choisissez votre niveau pour commencer.</p>
-          </div>
-
-          <!-- Search (hidden until step 3) -->
-          <div class="search-bar" id="search-container" style="display:none;" role="search">
-            <span class="search-icon" aria-hidden="true">🔍</span>
-            <input
-              type="search"
-              id="search-input"
-              placeholder="Rechercher un document..."
-              aria-label="Rechercher un document PDF"
-              autocomplete="off"
-            />
-            <button class="search-clear" id="search-clear" aria-label="Effacer la recherche" style="display:none;">✕</button>
-          </div>
-        </div>
-
-        <!-- Steps indicator -->
-        <div class="steps-indicator" id="steps-container" role="progressbar" aria-label="Étapes de navigation" style="margin-top:var(--space-4);"></div>
-      </div>
-    </div>
-
-    <!-- Main content area -->
-    <main class="dash-main" id="main-content" role="main">
-      <div class="container">
-        <!-- Results count (shown in PDF step) -->
-        <div class="results-bar" id="results-bar" style="display:none;">
-          <p class="results-count" id="results-count"></p>
-        </div>
-
-        <!-- Dynamic content rendered by ui.js -->
-        <div id="content-area" aria-live="polite" aria-atomic="false"></div>
-      </div>
-    </main>
-  </div>
-
-  <!-- ──────────── PDF VIEWER MODAL ──────────── -->
+  <!-- ──────────── FULLSCREEN PDF VIEWER MODAL ──────────── -->
   <div class="modal-overlay hidden" id="pdf-modal" role="dialog" aria-modal="true" aria-labelledby="pdf-modal-title">
     <div class="pdf-modal" role="document">
       <div class="pdf-modal-header">
-        <div class="pdf-modal-title" id="pdf-modal-title">Document</div>
+        <button class="btn btn-secondary btn-sm" id="modal-close" style="border-radius:50%; width:36px; height:36px; padding:0; display:flex; align-items:center; justify-content:center; border:none; font-size:16px;">✕</button>
+        <div class="pdf-modal-title" id="pdf-modal-title">Document PDF</div>
         <div class="pdf-modal-actions">
-          <a class="btn btn-accent btn-sm" id="pdf-download-btn" href="#" download target="_blank" rel="noopener" aria-label="Télécharger le PDF">
-            ⬇️ Télécharger
-          </a>
-          <a class="btn btn-secondary btn-sm" id="pdf-open-btn" href="#" target="_blank" rel="noopener" aria-label="Ouvrir dans un nouvel onglet">
-            🔗 Ouvrir
-          </a>
-          <button class="modal-close" id="modal-close" aria-label="Fermer le lecteur PDF">✕</button>
+          <a class="btn btn-primary btn-sm" id="pdf-download-btn" href="#" download target="_blank" rel="noopener">⬇️</a>
+          <a class="btn btn-secondary btn-sm" id="pdf-open-btn" href="#" target="_blank" rel="noopener">🔗</a>
         </div>
       </div>
       <div class="pdf-modal-body">
-        <!-- Loading state -->
-        <div class="pdf-loading-state" id="pdf-loading-state" aria-live="polite">
-          <div class="pdf-loading-spinner" aria-hidden="true"></div>
-          <p style="color:var(--text-secondary);font-size:var(--text-sm);">Chargement du document...</p>
+        <!-- Floating toolbar inside viewer -->
+        <div class="pdf-toolbar">
+          <button class="pdf-toolbar-btn" id="pdf-tool-zoom-out" title="Zoom Arrière">➖</button>
+          <button class="pdf-toolbar-btn" id="pdf-tool-zoom-in" title="Zoom Avant">➕</button>
+          <button class="pdf-toolbar-btn" id="pdf-tool-theme" title="Inverser les Couleurs (Mode Sombre)">🌓</button>
+          <button class="pdf-toolbar-btn" id="pdf-tool-bookmark" title="Sauvegarder la position">🔖</button>
+          <button class="pdf-toolbar-btn" id="pdf-tool-share" title="Partager le document">🔗</button>
         </div>
-        <!-- PDF Iframe viewer -->
+
+        <!-- Loading spinner -->
+        <div class="pdf-loading-state" id="pdf-loading-state">
+          <div class="pdf-loading-spinner" aria-hidden="true"></div>
+          <p style="color:var(--text-secondary);font-size:var(--text-sm);">Chargement sécurisé...</p>
+        </div>
+
+        <!-- iframe PDF embed -->
         <iframe
           class="pdf-iframe"
           id="pdf-iframe"
@@ -360,82 +333,161 @@
   <!-- ──────────── AUTH MODAL ──────────── -->
   <div class="modal-overlay hidden" id="auth-modal" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
     <div class="auth-modal">
-      <h2 id="auth-modal-title">👋 Connexion</h2>
-      <p>Connectez-vous avec votre compte Google pour sauvegarder vos préférences. La lecture est gratuite sans connexion.</p>
-
-      <button class="google-btn" id="google-signin-btn" aria-label="Se connecter avec Google">
-        <!-- Google SVG logo -->
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-        </svg>
-        Continuer avec Google
-      </button>
-
-      <div class="auth-divider">
-        <span>ou</span>
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: var(--space-4);">
+        <h2 id="auth-modal-title">👋 Connexion</h2>
+        <button id="auth-modal-close" style="cursor:pointer; font-size:var(--text-lg); padding:4px;">✕</button>
       </div>
 
-      <button class="btn btn-ghost" style="width:100%;" id="auth-modal-close" aria-label="Continuer sans connexion">
-        Continuer sans connexion →
-      </button>
+      <!-- Toggle sub-views (Login / Sign Up / Forgot Password) -->
+      <div id="auth-view-login">
+        <p>Connectez-vous pour suivre votre progression et synchroniser vos favoris.</p>
+        <form class="auth-form" id="login-form">
+          <div class="form-group">
+            <label for="login-email">Adresse Email</label>
+            <input type="email" id="login-email" class="form-input" placeholder="exemple@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Mot de passe</label>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required />
+          </div>
+          <div class="form-options">
+            <label class="form-checkbox-label">
+              <input type="checkbox" id="login-remember" checked />
+              Se souvenir de moi
+            </label>
+            <span class="forgot-password-link" id="goto-forgot">Mot de passe oublié ?</span>
+          </div>
+          <button type="submit" class="btn btn-primary w-full">Se Connecter</button>
+        </form>
+        
+        <div class="auth-divider"><span>ou</span></div>
+        
+        <button class="google-btn" id="google-signin-btn">
+          <!-- Google SVG icon -->
+          <svg viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Continuer avec Google
+        </button>
 
-      <p style="font-size:var(--text-xs);color:var(--text-muted);text-align:center;margin-top:var(--space-4);">
-        La connexion est optionnelle. Tous les documents sont accessibles sans compte.
-      </p>
+        <p style="margin-top:var(--space-6); text-align:center; font-size:var(--text-xs);">
+          Nouveau sur l'app ? <span class="forgot-password-link" id="goto-signup">Créer un compte</span>
+        </p>
+      </div>
+
+      <div id="auth-view-signup" class="hidden">
+        <p>Créez un compte pour suivre vos cours et sauvegarder vos matières favorites.</p>
+        <form class="auth-form" id="signup-form">
+          <div class="form-group">
+            <label for="signup-name">Nom complet</label>
+            <input type="text" id="signup-name" class="form-input" placeholder="Oussama Ouajgual" required />
+          </div>
+          <div class="form-group">
+            <label for="signup-email">Adresse Email</label>
+            <input type="email" id="signup-email" class="form-input" placeholder="exemple@email.com" required />
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Mot de passe</label>
+            <input type="password" id="signup-password" class="form-input" placeholder="Minimum 6 caractères" minlength="6" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-full">Créer mon compte</button>
+        </form>
+
+        <p style="margin-top:var(--space-6); text-align:center; font-size:var(--text-xs);">
+          Déjà un compte ? <span class="forgot-password-link" id="goto-login">Se connecter</span>
+        </p>
+      </div>
+
+      <div id="auth-view-forgot" class="hidden">
+        <p>Entrez votre email pour recevoir un lien de réinitialisation de mot de passe.</p>
+        <form class="auth-form" id="forgot-form">
+          <div class="form-group">
+            <label for="forgot-email">Adresse Email</label>
+            <input type="email" id="forgot-email" class="form-input" placeholder="exemple@email.com" required />
+          </div>
+          <button type="submit" class="btn btn-primary w-full">Envoyer le lien</button>
+        </form>
+
+        <p style="margin-top:var(--space-6); text-align:center; font-size:var(--text-xs);">
+          Retourner à la <span class="forgot-password-link" id="goto-login-2">connexion</span>
+        </p>
+      </div>
     </div>
   </div>
 
-  <!-- ──────────── TOAST CONTAINER ──────────── -->
-  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+  <!-- ──────────── GENERAL DETAILS / MODALS ──────────── -->
+  <!-- About Modal -->
+  <div class="modal-overlay hidden" id="about-modal" role="dialog" aria-modal="true" aria-labelledby="about-modal-title">
+    <div class="auth-modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: var(--space-4);">
+        <h2 id="about-modal-title">ℹ️ À propos de l'application</h2>
+        <button class="btn btn-ghost" id="about-modal-close" style="font-size: var(--text-lg); padding:4px;">✕</button>
+      </div>
+      <div style="font-size: var(--text-sm); line-height: 1.6; display: flex; flex-direction: column; gap: var(--space-3);">
+        <p><strong>BibLycée Maroc v1.0.0</strong></p>
+        <p>Une application éducative premium développée pour centraliser tous les cours, résumés, exercices et examens du lycée marocain.</p>
+        <p>Nos fichiers proviennent de sources éducatives fiables et sont classés pour aider les élèves dans leurs révisions quotidiennes ou pour la préparation aux examens régionaux et nationaux.</p>
+        <p>Merci d'étudier avec nous ! 🎓</p>
+      </div>
+    </div>
+  </div>
 
-  <!-- ──────────── SCROLL TO TOP ──────────── -->
-  <button class="scroll-top" id="scroll-top" aria-label="Retour en haut de page">↑</button>
+  <!-- Terms and Privacy Modal -->
+  <div class="modal-overlay hidden" id="terms-modal" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title">
+    <div class="auth-modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: var(--space-4);">
+        <h2 id="terms-modal-title">📄 Conditions & Confidentialité</h2>
+        <button class="btn btn-ghost" id="terms-modal-close" style="font-size: var(--text-lg); padding:4px;">✕</button>
+      </div>
+      <div style="font-size: var(--text-xs); line-height: 1.6; max-height: 250px; overflow-y: auto; padding-right: 6px;">
+        <p style="margin-bottom: var(--space-2);"><strong>1. Utilisation du service</strong></p>
+        <p style="margin-bottom: var(--space-3);">Les ressources partagées sur cette plateforme sont destinées à un usage strictement personnel et éducatif. Aucun usage commercial ou revente n'est autorisé.</p>
+        <p style="margin-bottom: var(--space-2);"><strong>2. Protection des données</strong></p>
+        <p style="margin-bottom: var(--space-3);">Nous collectons uniquement votre adresse email lorsque vous vous inscrivez pour sauvegarder vos préférences. Vos informations ne sont jamais partagées avec des tiers.</p>
+        <p style="margin-bottom: var(--space-2);"><strong>3. Droits d'auteur</strong></p>
+        <p>Tous les documents partagés appartiennent à leurs auteurs respectifs. Si vous possédez un document et souhaitez son retrait, contactez-nous via le formulaire.</p>
+      </div>
+    </div>
+  </div>
 
-  <!-- ──────────── SCRIPTS ──────────── -->
-  <script type="module">
-    import './js/ui.js';
+  <!-- Contact Modal -->
+  <div class="modal-overlay hidden" id="contact-modal" role="dialog" aria-modal="true" aria-labelledby="contact-modal-title">
+    <div class="auth-modal">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: var(--space-4);">
+        <h2 id="contact-modal-title">✉️ Nous Contacter</h2>
+        <button class="btn btn-ghost" id="contact-modal-close" style="font-size: var(--text-lg); padding:4px;">✕</button>
+      </div>
+      <form class="auth-form" id="contact-form" onsubmit="event.preventDefault(); alert('Message envoyé !'); document.getElementById('contact-modal').classList.add('hidden');">
+        <div class="form-group">
+          <label for="contact-name">Nom complet</label>
+          <input type="text" id="contact-name" class="form-input" placeholder="Votre nom" required />
+        </div>
+        <div class="form-group">
+          <label for="contact-message">Message</label>
+          <textarea id="contact-message" class="form-input" style="height: 100px; padding: var(--space-2); resize: none;" placeholder="Écrivez votre message ici..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary w-full">Envoyer le message</button>
+      </form>
+    </div>
+  </div>
 
-    // Scroll-to-top button
-    const scrollTopBtn = document.getElementById('scroll-top');
-    window.addEventListener('scroll', () => {
-      scrollTopBtn?.classList.toggle('visible', window.scrollY > 400);
-    }, { passive: true });
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toast-container"></div>
 
-    scrollTopBtn?.addEventListener('click', () => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  <!-- SCRIPTS -->
+  <script type="module" src="js/ui.js"></script>
 
-    // User dropdown toggle
-    const userAvatar   = document.getElementById('user-avatar');
-    const userDropdown = document.getElementById('user-dropdown');
-
-    userAvatar?.addEventListener('click', () => {
-      const isOpen = !userDropdown.classList.contains('hidden');
-      userDropdown.classList.toggle('hidden');
-      userAvatar.setAttribute('aria-expanded', String(!isOpen));
-    });
-
-    document.addEventListener('click', e => {
-      if (!userAvatar?.contains(e.target) && !userDropdown?.contains(e.target)) {
-        userDropdown?.classList.add('hidden');
-        userAvatar?.setAttribute('aria-expanded', 'false');
+  <!-- Global access triggers for Home inline clicks -->
+  <script>
+    function triggerExploreLevel(levelName) {
+      // Direct integration helper for home screen clicks
+      const exploreTabBtn = document.getElementById('nav-tab-explore');
+      if (exploreTabBtn) {
+        exploreTabBtn.click();
+        // The event listener in ui.js will handle tab switching and we can programmatically trigger level selection
+        setTimeout(() => {
+          const levelCard = document.querySelector(`.level-card[data-name="${levelName}"]`);
+          if (levelCard) levelCard.click();
+        }, 150);
       }
-    });
-
-    // Results bar visibility
-    const resultsBar = document.getElementById('results-bar');
-    const searchContainer = document.getElementById('search-container');
-
-    const observer = new MutationObserver(() => {
-      const searchVisible = searchContainer?.style.display !== 'none';
-      if (resultsBar) resultsBar.style.display = searchVisible ? 'flex' : 'none';
-    });
-
-    if (searchContainer) {
-      observer.observe(searchContainer, { attributes: true, attributeFilter: ['style'] });
     }
   </script>
 </body>
