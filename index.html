@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Bibliothèque Lycée Maroc — Accédez à des milliers de cours, exercices et documents PDF pour le lycée marocain. Tronc Commun, 1ère Bac, 2ème Bac." />
+  <meta name="keywords" content="lycée maroc, bac maroc, cours pdf, svt, mathématiques, physique chimie, 2ème bac" />
+  <meta name="author" content="Bibliothèque Lycée Maroc" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Bibliothèque Lycée Maroc — Ressources Scolaires" />
+  <meta property="og:description" content="Plus de 3000 documents PDF pour les élèves du lycée marocain." />
+  <meta property="og:type" content="website" />
+
+  <title>Bibliothèque Lycée Maroc — Ressources Scolaires Gratuites</title>
+
+  <!-- Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+
+  <style>
+    /* ── Page-specific styles ── */
+    .hero-visual {
+      position: absolute;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 45%;
+      max-width: 600px;
+      pointer-events: none;
+      animation: fadeSlideUp 1s ease-out 0.4s both;
+    }
+
+    .floating-cards {
+      position: relative;
+      width: 100%;
+      height: 500px;
+    }
+
+    .floating-card {
+      position: absolute;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: var(--radius-xl);
+      padding: 20px 24px;
+      backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 220px;
+      color: #fff;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    }
+
+    .floating-card:nth-child(1) {
+      top: 60px; left: 20px;
+      animation: float 4s ease-in-out infinite;
+    }
+    .floating-card:nth-child(2) {
+      top: 160px; right: 30px;
+      animation: float 4s ease-in-out 1s infinite;
+    }
+    .floating-card:nth-child(3) {
+      top: 290px; left: 40px;
+      animation: float 4s ease-in-out 2s infinite;
+    }
+    .floating-card:nth-child(4) {
+      top: 380px; right: 20px;
+      animation: float 4s ease-in-out 0.5s infinite;
+    }
+
+    .fc-icon {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+
+    .fc-icon.blue   { background: rgba(37, 99, 235, 0.4); }
+    .fc-icon.green  { background: rgba(16, 185, 129, 0.4); }
+    .fc-icon.purple { background: rgba(124, 58, 237, 0.4); }
+    .fc-icon.orange { background: rgba(245, 158, 11, 0.4); }
+
+    .fc-title {
+      font-size: 0.75rem;
+      opacity: 0.6;
+      margin-bottom: 2px;
+    }
+    .fc-value {
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    /* Decorative orbs */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .orb-1 {
+      width: 400px; height: 400px;
+      background: rgba(37, 99, 235, 0.3);
+      top: -100px; right: 10%;
+      animation: float 8s ease-in-out infinite;
+    }
+    .orb-2 {
+      width: 300px; height: 300px;
+      background: rgba(124, 58, 237, 0.2);
+      bottom: 100px; right: 30%;
+      animation: float 6s ease-in-out 2s infinite;
+    }
+
+    /* Section labels */
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: var(--primary-light);
+      color: var(--primary);
+      border-radius: var(--radius-full);
+      font-size: var(--text-xs);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: var(--space-4);
+    }
+
+    [data-theme="dark"] .section-tag {
+      background: var(--primary-light);
+      color: #93C5FD;
+    }
+
+    /* Highlight cards */
+    .highlight-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-6);
+      margin-top: var(--space-10);
+    }
+
+    .highlight-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-xl);
+      padding: var(--space-8);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      transition: all var(--transition-base);
+    }
+
+    .highlight-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-xl);
+      border-color: var(--primary);
+    }
+
+    .hc-number {
+      font-size: var(--text-5xl);
+      font-weight: 900;
+      background: var(--gradient-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+    }
+
+    .hc-label {
+      font-size: var(--text-lg);
+      font-weight: 700;
+    }
+
+    .hc-desc {
+      font-size: var(--text-sm);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      background: var(--gradient-hero);
+      border-radius: var(--radius-xl);
+      padding: var(--space-16);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin: var(--space-8) 0;
+    }
+
+    .cta-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 60% at 30% 50%, rgba(37,99,235,0.3) 0%, transparent 70%),
+        radial-gradient(ellipse 60% 60% at 70% 50%, rgba(124,58,237,0.2) 0%, transparent 70%);
+    }
+
+    .cta-section > * { position: relative; z-index: 1; }
+
+    .cta-section h2 {
+      font-size: var(--text-4xl);
+      font-weight: 900;
+      color: #fff;
+      margin-bottom: var(--space-4);
+    }
+
+    .cta-section p {
+      color: #94A3B8;
+      font-size: var(--text-lg);
+      margin-bottom: var(--space-8);
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* Navbar transparent on hero */
+    .navbar { background: transparent; }
+    .navbar.scrolled {
+      background: rgba(15, 23, 42, 0.9);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    [data-theme="light"] .navbar.scrolled {
+      background: rgba(248, 250, 252, 0.95);
+      border-bottom: 1px solid var(--border);
+    }
+
+    @media (max-width: 1024px) {
+      .hero-visual { display: none; }
+      .highlight-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .highlight-grid { grid-template-columns: 1fr; }
+      .cta-section { padding: var(--space-10); }
+      .cta-section h2 { font-size: var(--text-3xl); }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ──────────── NAVBAR ──────────── -->
+  <nav class="navbar transparent" id="navbar" role="navigation" aria-label="Navigation principale">
+    <div class="container">
+      <a href="index.html" class="navbar-logo" aria-label="Accueil Bibliothèque Lycée Maroc">
+        <div class="logo-icon" aria-hidden="true">📚</div>
+        <span>BibLycée<span style="color:var(--accent);">Maroc</span></span>
+      </a>
+
+      <nav class="navbar-nav" aria-label="Liens principaux">
+        <a href="index.html" class="nav-link active">Accueil</a>
+        <a href="dashboard.html" class="nav-link">Bibliothèque</a>
+        <a href="#features" class="nav-link">Fonctionnalités</a>
+        <a href="#about" class="nav-link">À propos</a>
+      </nav>
+
+      <div class="navbar-actions">
+        <button class="theme-toggle" id="theme-toggle-home" title="Changer le thème" aria-label="Basculer le thème">🌙</button>
+        <a href="dashboard.html" class="btn btn-primary btn-sm">
+          🚀 Accéder
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ──────────── HERO ──────────── -->
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero-grid" aria-hidden="true"></div>
+    <div class="orb orb-1" aria-hidden="true"></div>
+    <div class="orb orb-2" aria-hidden="true"></div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge" aria-label="Nouveau">
+          ✨ Plateforme scolaire gratuite
+        </div>
+
+        <h1 id="hero-title">
+          Votre bibliothèque<br />
+          <span class="text-gradient">scolaire numérique</span>
+        </h1>
+
+        <p>
+          Accédez à plus de <strong style="color:#fff">3 318 documents PDF</strong> organisés
+          par niveau, filière et matière. Tronc Commun, 1ère Bac et 2ème Bac —
+          tout ce dont vous avez besoin, en un seul endroit.
+        </p>
+
+        <div class="hero-cta">
+          <a href="dashboard.html" class="btn btn-primary btn-lg" id="cta-explore">
+            📖 Explorer la bibliothèque
+          </a>
+          <a href="#features" class="btn btn-white btn-lg" id="cta-learn">
+            En savoir plus
+          </a>
+        </div>
+
+        <div class="hero-stats" role="list" aria-label="Statistiques de la plateforme">
+          <div class="stat-card" role="listitem">
+            <span class="stat-number" id="stat-pdfs" aria-label="Nombre de documents">3 318</span>
+            <span class="stat-label">📄 Documents PDF</span>
+          </div>
+          <div class="stat-card" role="listitem">
+            <span class="stat-number" aria-label="Nombre de matières">36</span>
+            <span class="stat-label">📚 Matières</span>
+          </div>
+          <div class="stat-card" role="listitem">
+            <span class="stat-number" aria-label="Nombre de filières">6</span>
+            <span class="stat-label">🔬 Filières</span>
+          </div>
+          <div class="stat-card" role="listitem">
+            <span class="stat-number" aria-label="Nombre de niveaux">3</span>
+            <span class="stat-label">🎓 Niveaux</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating cards — visual decoration -->
+    <div class="hero-visual" aria-hidden="true">
+      <div class="floating-cards">
+        <div class="floating-card">
+          <div class="fc-icon blue">📐</div>
+          <div>
+            <div class="fc-title">Mathématiques</div>
+            <div class="fc-value">2ème Bac Sciences</div>
+          </div>
+        </div>
+        <div class="floating-card">
+          <div class="fc-icon green">⚗️</div>
+          <div>
+            <div class="fc-title">Physique-Chimie</div>
+            <div class="fc-value">1ère Bac Sc. Exp.</div>
+          </div>
+        </div>
+        <div class="floating-card">
+          <div class="fc-icon purple">🧬</div>
+          <div>
+            <div class="fc-title">SVT</div>
+            <div class="fc-value">Tronc Commun</div>
+          </div>
+        </div>
+        <div class="floating-card">
+          <div class="fc-icon orange">📄</div>
+          <div>
+            <div class="fc-title">Documents</div>
+            <div class="fc-value">+3 318 PDFs</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────── FEATURES ──────────── -->
+  <section class="section" id="features" aria-labelledby="features-title">
+    <div class="container">
+      <div class="text-center mb-8">
+        <div class="section-tag">✨ Fonctionnalités</div>
+        <h2 id="features-title" style="font-size:var(--text-4xl);font-weight:900;">
+          Tout ce dont vous avez besoin
+        </h2>
+        <p style="color:var(--text-secondary);font-size:var(--text-lg);max-width:600px;margin:var(--space-4) auto 0;">
+          Une plateforme conçue pour les élèves marocains, simple et rapide.
+        </p>
+      </div>
+
+      <div class="features-grid stagger-children">
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">📂</div>
+          <h3>Organisation intuitive</h3>
+          <p>Naviguez facilement par niveau (Tronc Commun, 1ère Bac, 2ème Bac), puis par filière, puis par matière. Tout est structuré logiquement.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">👁️</div>
+          <h3>Lecture intégrée</h3>
+          <p>Lisez vos PDF directement dans le navigateur sans téléchargement ni redirection. Notre visionneuse intégrée est fluide et rapide.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">🔍</div>
+          <h3>Recherche instantanée</h3>
+          <p>Trouvez n'importe quel document en quelques secondes grâce à la recherche en temps réel. Filtrez par nom, matière ou filière.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">📱</div>
+          <h3>100% Responsive</h3>
+          <p>Utilisez la bibliothèque depuis votre téléphone, tablette ou ordinateur. L'interface s'adapte parfaitement à chaque écran.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">🌙</div>
+          <h3>Mode sombre / clair</h3>
+          <p>Protégez vos yeux lors des longues sessions d'étude avec le mode sombre. Basculez en un clic entre les deux thèmes.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon" aria-hidden="true">⚡</div>
+          <h3>Ultra rapide</h3>
+          <p>Les données sont mises en cache intelligemment. Les chargements sont quasi instantanés après la première visite grâce à Supabase.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────── HIGHLIGHTS ──────────── -->
+  <section class="section-sm" id="about" aria-labelledby="about-title">
+    <div class="container">
+      <div class="text-center mb-8">
+        <div class="section-tag">📊 En chiffres</div>
+        <h2 id="about-title" style="font-size:var(--text-4xl);font-weight:900;">
+          La bibliothèque en chiffres
+        </h2>
+      </div>
+
+      <div class="highlight-grid stagger-children">
+        <div class="highlight-card">
+          <div class="hc-number">3 318</div>
+          <div class="hc-label">📄 Documents PDF</div>
+          <div class="hc-desc">Des cours, des exercices corrigés, des examens et des résumés pour toutes les matières.</div>
+        </div>
+        <div class="highlight-card">
+          <div class="hc-number">36</div>
+          <div class="hc-label">📚 Matières</div>
+          <div class="hc-desc">Mathématiques, Physique-Chimie, SVT, Français, Anglais, Arabe, Philosophie et bien plus.</div>
+        </div>
+        <div class="highlight-card">
+          <div class="hc-number">6</div>
+          <div class="hc-label">🔬 Filières</div>
+          <div class="hc-desc">Sciences Mathématiques, Sciences Expérimentales, Sciences SVT, Sciences Physiques, BIOF et plus.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────── CTA ──────────── -->
+  <section class="section-sm">
+    <div class="container">
+      <div class="cta-section" aria-labelledby="cta-title">
+        <h2 id="cta-title">Prêt à explorer ?</h2>
+        <p>Accédez gratuitement à des milliers de ressources scolaires organisées pour vous.</p>
+        <a href="dashboard.html" class="btn btn-primary btn-lg" id="cta-dashboard">
+          🚀 Accéder à la bibliothèque
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ──────────── FOOTER ──────────── -->
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="navbar-logo" style="margin-bottom:var(--space-4);">
+            <div class="logo-icon">📚</div>
+            <span>BibLycée<span style="color:var(--accent);">Maroc</span></span>
+          </div>
+          <p>Une bibliothèque numérique dédiée aux élèves des lycées marocains. Accédez gratuitement à des milliers de ressources pédagogiques.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="index.html">Accueil</a></li>
+            <li><a href="dashboard.html">Bibliothèque</a></li>
+            <li><a href="#features">Fonctionnalités</a></li>
+            <li><a href="#about">À propos</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Niveaux</h4>
+          <ul>
+            <li><a href="dashboard.html">Tronc Commun</a></li>
+            <li><a href="dashboard.html">1ère Bac</a></li>
+            <li><a href="dashboard.html">2ème Bac</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2026 Bibliothèque Lycée Maroc. Tous droits réservés.</p>
+        <p>Construit avec ❤️ pour les élèves marocains</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container" aria-live="polite" aria-atomic="true"></div>
+
+  <script type="module">
+    import { applyTheme } from './js/ui.js';
+
+    // ── Theme init ──
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    applyTheme(savedTheme);
+
+    // ── Theme toggle on landing page ──
+    const themeBtn = document.getElementById('theme-toggle-home');
+    let currentTheme = savedTheme;
+
+    themeBtn?.addEventListener('click', () => {
+      currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(currentTheme);
+      themeBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
+    });
+
+    themeBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+
+    // ── Navbar scroll ──
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      navbar.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+    // ── Animated counter ──
+    function animateCounter(el, target, duration = 2000) {
+      const start = performance.now();
+      const update = (time) => {
+        const progress = Math.min((time - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = Math.round(eased * target).toLocaleString('fr-FR');
+        if (progress < 1) requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+    }
+
+    // Trigger counter animation on scroll into view
+    const statsEl = document.getElementById('stat-pdfs');
+    if (statsEl) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateCounter(statsEl, 3318);
+            observer.disconnect();
+          }
+        });
+      }, { threshold: 0.5 });
+      observer.observe(statsEl);
+    }
+
+    // ── Smooth scroll for anchor links ──
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        const id = a.getAttribute('href').slice(1);
+        const el = document.getElementById(id);
+        if (el) {
+          e.preventDefault();
+          el.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
