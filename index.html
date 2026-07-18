@@ -420,24 +420,21 @@
     </div>
   </footer>
 
-  <script type="module">
-    import { applyTheme } from './js/ui.js';
-
-    // Theme initialization
+  <script>
+    // Standalone theme handler for landing page (no ui.js needed here)
     const savedTheme = localStorage.getItem('theme') || 'dark';
-    applyTheme(savedTheme);
+    document.documentElement.setAttribute('data-theme', savedTheme);
 
-    // Toggle theme button
     const themeBtn = document.getElementById('theme-toggle-home');
     let currentTheme = savedTheme;
+    if (themeBtn) themeBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
 
     themeBtn?.addEventListener('click', () => {
       currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
-      applyTheme(currentTheme);
+      document.documentElement.setAttribute('data-theme', currentTheme);
+      localStorage.setItem('theme', currentTheme);
       themeBtn.textContent = currentTheme === 'dark' ? '☀️' : '🌙';
     });
-
-    themeBtn.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
   </script>
 </body>
 </html>
